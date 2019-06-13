@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>To-Do</ion-title>
+    <ion-button slot="end" margin color="medium" (click)="onAddClick()">
+      <ion-icon name="add"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <app-todo-list *ngFor="let todo of todos" [todo]="todo"></app-todo-list>
+  </ion-list>
+</ion-content>

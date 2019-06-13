@@ -1,0 +1,13 @@
+
+<ion-item>
+  <ion-item>
+      <ion-checkbox *ngIf="todo.completed===false" color="dark" (click)="onChangeState()"></ion-checkbox>
+      <ion-checkbox *ngIf="todo.completed===true" checked color="dark" (click)="onChangeState()"></ion-checkbox>
+  </ion-item>
+  <ion-label [routerLink]="['/first',todo.id]">
+    {{todo.name}}
+  </ion-label>
+  <!-- <ion-label *ngIf="todo.completed===true" id="done" [routerLink]="['/first',todo.id]">
+    {{todo.name}}
+  </ion-label> -->
+</ion-item>

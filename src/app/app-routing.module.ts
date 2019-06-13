@@ -2,8 +2,18 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', loadChildren: './home/home.module#HomePageModule' },
+  { path: '', redirectTo: 'first', pathMatch: 'full' },
+  { path: 'first', 
+    children:[
+      {
+        path:'',
+        loadChildren: './first/first.module#FirstPageModule' 
+      },
+      {
+        path:':todoId',
+        loadChildren: './first/todo-detail/todo-detail.module#TodoDetailPageModule'
+      }
+]}
 ];
 
 @NgModule({
