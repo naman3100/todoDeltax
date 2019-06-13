@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, KeyValueDiffers } from '@angular/core';
 import { todoModel } from './todo.model';
 
 import { Storage } from '@ionic/Storage';
@@ -8,49 +8,55 @@ import { Storage } from '@ionic/Storage';
 })
 export class TodoServiceService {
   todokey:string="naman";
-  private todos: todoModel[] 
-  = [
-    {id:"1",
-    name:"Eat Breakfast",
-    description:"Milk, Bread and Cornflakes",
-    completed:true
-  },{
-    id:"2",
-    name:"Eat Lunch",
-    description:"Rice, Chapatti and Curd",
-    completed:false
-  },{
-    id:"3",
-    name:"Eat Snaks",
-    description:"Tea and Samosa",
-    completed:true
-  },{
-    id:"4",
-    name:"Eat Dinner",
-    description:"Paneer, Chapatti and Dal",
-    completed:false
-  },{
-    id:"5",
-    name:"Eat Mid Night Pizza",
-    description:"Base, Jalapino, Onion, Cheese, Paneer",
-    completed:true
-  }
-]
+  differ: any;
+  private todos: todoModel[] ;
+  // = [
+  //   {id:"1",
+  //   name:"Eat Breakfast",
+  //   description:"Milk, Bread and Cornflakes",
+  //   completed:true
+  // },{
+  //   id:"2",
+  //   name:"Eat Lunch",
+  //   description:"Rice, Chapatti and Curd",
+  //   completed:false
+  // },{
+  //   id:"3",
+  //   name:"Eat Snaks",
+  //   description:"Tea and Samosa",
+  //   completed:true
+  // },{
+  //   id:"4",
+  //   name:"Eat Dinner",
+  //   description:"Paneer, Chapatti and Dal",
+  //   completed:false
+  // },{
+  //   id:"5",
+  //   name:"Eat Mid Night Pizza",
+  //   description:"Base, Jalapino, Onion, Cheese, Paneer",
+  //   completed:true
+  // }
+// ]
 
   constructor(private storage: Storage) {
-    this.storage.set(this.todokey,this.todos)
+    this.storage.get(this.todokey).then((todoss)=>{
+      this.todos=todoss;
+    })
    }
 
-   async getTodos(){
-     let getTodo = await this.storage.get(this.todokey);
+   
+
+
+    getTodos(){
+  //let getTodo = await this.storage.get(this.todokey);
     // console.log(getTodo)
-      return [...getTodo];
+      return [...this.todos];
   }
 
- async getOneTodo(todoId:String)
+  getOneTodo(todoId:String)
   {
-     let todoos =await this.storage.get(this.todokey)
-    let oneTodo = todoos.find(todo => {
+     //let todoos =await this.storage.get(this.todokey)
+    let oneTodo = this.todos.find(todo => {
       return todo.id===todoId
     })
     return {...oneTodo};
@@ -58,36 +64,53 @@ export class TodoServiceService {
 
   async addTodo(todo: todoModel)
   {
-    const gotTodo=await this.storage.get(this.todokey)
-    if(gotTodo)
+    //const gotTodo=await this.storage.get(this.todokey)
+    if(this.todos)
     {
-      gotTodo.push(todo)
-      await this.storage.set(this.todokey,gotTodo);
+      this.todos.push(todo)
+      this.updateTodo()
+      //await this.storage.set(this.todokey,gotTodo);
     }
     else{
-      await this.storage.set(this.todokey,[todo])
+      //await this.storage.set(this.todokey,[todo])
+      this.todos=[todo];
+      this.updateTodo()
     }
   }
 
   async deleteTodo(todoId:String)
   {
-    const getTodo =await this.storage.get(this.todokey);
-    const newList = getTodo.filter((todo)=>{
+   // const getTodo =await this.storage.get(this.todokey);
+    this.todos = this.todos.filter((todo)=>{
       return todo.id !== todoId;
     })
-    await this.storage.set(this.todokey,newList)
+    this.updateTodo();
+    //await this.storage.set(this.todokey,newList)
 }
 
-async updateTodo(updatedTodo:todoModel)
+updateOneTodo(updatedTodo)
 {
-  let todos:todoModel[] = await this.getTodos();
-  let newTodos:todoModel[] = todos.filter((todo)=>{
-    return todo.id !== updatedTodo.id;
-  });
-  newTodos.push(updatedTodo);
-  console.log(newTodos);
-  await this.storage.set(this.todokey,newTodos);
+  let todo=this.getOneTodo(updatedTodo);
+  todo.completed=!todo.completed;
+  this.todos=this.todos.filter((todo)=>{
+    return todo.id !== updatedTodo;
+  })
+  this.todos.push(todo);
+  this.updateTodo();
+  //let todos:todoModel[] = await this.getTodos();
+  // let newTodos:todoModel[] = todos.filter((todo)=>{
+  //   return todo.id !== updatedTodo.id;
+  // });
+  // newTodos.push(updatedTodo);
+  // console.log(newTodos);
+  // await this.storage.set(this.todokey,newTodos);
 }
+
+updateTodo()
+{
+  this.storage.set(this.todokey,this.todos).then();
+}
+
 
 
 }

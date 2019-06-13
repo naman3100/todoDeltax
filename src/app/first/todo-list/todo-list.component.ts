@@ -14,11 +14,11 @@ export class TodoListComponent implements OnInit {
 
   ngOnInit() {}
 
- async onChangeState()
+ onChangeState()
   {
-    let gotTodo =await this.todoSrv.getOneTodo(this.todo.id);
-    gotTodo.completed = !gotTodo.completed;
-    await this.todoSrv.updateTodo(gotTodo);
+   // let gotTodo =await this.todoSrv.getOneTodo(this.todo.id);
+   // gotTodo.completed = !gotTodo.completed;
+  this.todoSrv.updateOneTodo(this.todo.id);
   }
 
 }

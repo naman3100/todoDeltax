@@ -16,21 +16,21 @@ export class FirstPage implements OnInit {
     
    }
 
-  async ngOnInit() {
+  ngOnInit() {
     
   }
 
-  async ionViewWillEnter(){
-  const gotTodo = await this.todoSer.getTodos();
+ionViewWillEnter(){
+  const gotTodo = this.todoSer.getTodos();
   this.todos=gotTodo;
   }
 
-  async ionViewWillLeave(){
-  const gotTodo = await this.todoSer.getTodos();
+ionViewWillLeave(){
+  const gotTodo =this.todoSer.getTodos();
   this.todos=gotTodo;
   }
 
-async onAddClick()
+onAddClick()
   {
     console.log(this.todos);
     this.alertCtrl.create({
@@ -52,7 +52,7 @@ async onAddClick()
         },
       {
         text:'Ok',
-        handler:async (aData)=> {
+        handler:(aData)=> {
          let id:string=aData.Title;
          let name:string=id;
          let description:string=aData.Description;
@@ -68,10 +68,10 @@ async onAddClick()
            return;
          }
           let newTodo  = {id:id,name:name,description:description,completed:false};
-       await this.todoSer.addTodo(newTodo);
-       const gotTodo= await this.todoSer.getTodos();;
-       console.log("from firt page " + gotTodo)
-       this.todos.push(newTodo)//;)=[...gotTodo];
+      this.todoSer.addTodo(newTodo);
+       const gotTodo= this.todoSer.getTodos();;
+       //console.log("from firt page " + gotTodo)
+       this.todos=gotTodo;
         }
       }]
     }).then(alertEl => {
