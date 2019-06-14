@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 export class FirstPage implements OnInit {
   todos:todoModel[];
   
+  private page:number = 0;
+  
   constructor(private todoSer : TodoServiceService, private alertCtrl: AlertController, private router : Router) {
     
    }
@@ -21,13 +23,12 @@ export class FirstPage implements OnInit {
   }
 
 ionViewWillEnter(){
-  const gotTodo = this.todoSer.getTodos();
-  this.todos=gotTodo;
+  this.todos = this.todoSer.getTodoByPage(this.page);
   }
 
 ionViewWillLeave(){
-  const gotTodo =this.todoSer.getTodos();
-  this.todos=gotTodo;
+  // const gotTodo =this.todoSer.getTodos();
+  // this.todos=gotTodo;
   }
 
 onAddClick()
@@ -69,7 +70,7 @@ onAddClick()
          }
           let newTodo  = {id:id,name:name,description:description,completed:false};
       this.todoSer.addTodo(newTodo);
-       const gotTodo= this.todoSer.getTodos();;
+       const gotTodo= this.todoSer.getTodoByPage(this.page);
        //console.log("from firt page " + gotTodo)
        this.todos=gotTodo;
         }
@@ -77,6 +78,40 @@ onAddClick()
     }).then(alertEl => {
       alertEl.present();
     })
+  }
+
+  // loadMoreTodo(event)
+  // {
+  //   this.page++;
+  //   // this.todos=
+  //   // this.todos.concat(this.todoSer.getTodoByPage(this.page));
+  // }
+
+  OnBackClick()
+  {
+    if(this.page===0)
+    {
+      console.log("Back not allowed")
+      return;
+    }
+    this.page--;
+    this.todos=this.todoSer.getTodoByPage(this.page);
+  }
+
+  OnNextClick()
+  {
+    let possiblePages=Math.floor(this.todoSer.currentlyPossiblePages());
+    if(this.page<possiblePages)
+    {
+      this.page++;
+    this.todos=this.todoSer.getTodoByPage(this.page);
+    console.log(this.page +   "        "+possiblePages);
+    }
+    else{
+      console.log("next not allowed")
+      return;
+    }
+    
   }
 
 

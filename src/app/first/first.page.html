@@ -12,3 +12,13 @@
     <app-todo-list *ngFor="let todo of todos" [todo]="todo"></app-todo-list>
   </ion-list>
 </ion-content>
+<ion-toolbar>
+  <ion-button padding margin slot="start" (click)="OnBackClick()">
+    <ion-label>Back</ion-label>
+  </ion-button>
+
+  <ion-button padding margin slot="end" (click)="OnNextClick()">
+    <ion-label>Next</ion-label>
+  </ion-button>
+  
+</ion-toolbar>

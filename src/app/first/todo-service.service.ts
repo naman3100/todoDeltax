@@ -8,7 +8,7 @@ import { Storage } from '@ionic/Storage';
 })
 export class TodoServiceService {
   todokey:string="naman";
-  differ: any;
+  private totalTodo:number;
   private todos: todoModel[] ;
   // = [
   //   {id:"1",
@@ -41,6 +41,7 @@ export class TodoServiceService {
   constructor(private storage: Storage) {
     this.storage.get(this.todokey).then((todoss)=>{
       this.todos=todoss;
+      this.totalTodo=this.todos.length;
     })
    }
 
@@ -51,6 +52,13 @@ export class TodoServiceService {
   //let getTodo = await this.storage.get(this.todokey);
     // console.log(getTodo)
       return [...this.todos];
+  }
+
+  getTodoByPage(page:number)
+  {
+    let skip=page*5;
+    let giveTodo : todoModel[] = this.todos.slice(skip,skip+5);
+    return [...giveTodo];
   }
 
   getOneTodo(todoId:String)
@@ -69,11 +77,13 @@ export class TodoServiceService {
     {
       this.todos.push(todo)
       this.updateTodo()
+      this.totalTodo++;
       //await this.storage.set(this.todokey,gotTodo);
     }
     else{
       //await this.storage.set(this.todokey,[todo])
       this.todos=[todo];
+      this.totalTodo++;
       this.updateTodo()
     }
   }
@@ -84,6 +94,7 @@ export class TodoServiceService {
     this.todos = this.todos.filter((todo)=>{
       return todo.id !== todoId;
     })
+    this.totalTodo--;
     this.updateTodo();
     //await this.storage.set(this.todokey,newList)
 }
@@ -112,6 +123,10 @@ updateTodo()
   this.storage.set(this.todokey,this.todos).then();
 }
 
+currentlyPossiblePages()
+{
+  return this.totalTodo/5;
+}
 
 
 }
