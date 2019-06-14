@@ -59,7 +59,7 @@ export class TodoServiceService {
     let oneTodo = this.todos.find(todo => {
       return todo.id===todoId
     })
-    return {...oneTodo};
+    return oneTodo;
   }
 
   async addTodo(todo: todoModel)
@@ -91,11 +91,12 @@ export class TodoServiceService {
 updateOneTodo(updatedTodo)
 {
   let todo=this.getOneTodo(updatedTodo);
+  // todo.completed=!todo.completed;
+  // this.todos=this.todos.filter((todo)=>{
+  //   return todo.id !== updatedTodo;
+  // })
+  // this.todos.push(todo);
   todo.completed=!todo.completed;
-  this.todos=this.todos.filter((todo)=>{
-    return todo.id !== updatedTodo;
-  })
-  this.todos.push(todo);
   this.updateTodo();
   //let todos:todoModel[] = await this.getTodos();
   // let newTodos:todoModel[] = todos.filter((todo)=>{
