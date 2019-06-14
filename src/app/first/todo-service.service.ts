@@ -1,4 +1,4 @@
-import { Injectable, KeyValueDiffers } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { todoModel } from './todo.model';
 
 import { Storage } from '@ionic/Storage';
