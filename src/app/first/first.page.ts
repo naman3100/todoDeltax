@@ -91,7 +91,14 @@ onAddClick()
   {
     if(this.page===0)
     {
-      console.log("Back not allowed")
+      //console.log("Back not allowed")
+      this.alertCtrl.create({
+        header:"Caution !!",
+        message:"NO TO-DO's Present",
+        buttons:[{
+          text:'Ok'
+      }]
+       }).then(alert => {alert.present()});
       return;
     }
     this.page--;
@@ -108,7 +115,13 @@ onAddClick()
     console.log(this.page +   "        "+possiblePages);
     }
     else{
-      console.log("next not allowed")
+      this.alertCtrl.create({
+        header:"Caution !!",
+        message:"NO TO-DO's Present",
+        buttons:[{
+          text:'Ok'
+      }]
+       }).then(alert => {alert.present()});
       return;
     }
     
